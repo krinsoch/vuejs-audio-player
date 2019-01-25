@@ -1,6 +1,6 @@
 <template>
   <div id="musicframe">
-    <p>{{currentInfo}}</p>
+    <marquee>{{currentInfo}}</marquee>
     <div class="img">
       <img v-bind:src="currentImage" width="100%" height="100%"/>
     </div>
@@ -61,12 +61,6 @@ export default {
     padding:20px;
   }
 }
-  p {
-    display: block;
-    font-size: 30px;
-    text-align: center;
-    margin: 8px;
-  }
   .img {
     height: auto;
   }
@@ -74,6 +68,14 @@ export default {
     border: 1px;
     border-radius: 4px;
     padding: 10px;
+  }
+  marquee {
+    width: 100%;
+    height: 40px;
+    margin: 5px;
+    display: block;
+    font-size: 30px;
+    text-align: center;
   }
   #controls {
     border: none;
