@@ -1,7 +1,7 @@
 <template>
   <div class='row'>
     <div class='column'>
-      <musicframe v-bind:currentSong="currentSong" v-bind:currentImage="currentImage" v-bind:currentInfo="currentInfo"></musicframe>
+      <musicframe v-bind:currentSong="currentSong" v-bind:currentImage="currentImage" v-bind:currentInfo="currentInfo" v-bind:icon="icon"></musicframe>
     </div>
     <div class='column'>
       <playlist v-bind:currentSong="currentSong" v-bind:currentImage="currentImage" v-bind:currentInfo="currentInfo" @updateData="swapData($event)"></playlist>
@@ -24,7 +24,8 @@ export default {
     return {
       currentSong: '',
       currentImage: 'https://i.ibb.co/Xxc5QT7/001.jpg',
-      currentInfo: 'Audio Player'
+      currentInfo: 'Audio Player',
+      icon: 'btn fa fa-volume-up fa-4x'
     }
   },
   methods: {
