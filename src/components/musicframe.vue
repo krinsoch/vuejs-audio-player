@@ -9,6 +9,7 @@
         <source v-bind:src="currentSong"/>
         not supported
       </audio>
+      <span v-bind:class="changeIcon" v-on:click="mute"></span>
       <span class="btn fa fa-play fa-4x" v-on:click="play"></span>
       <span class="btn fa fa-pause fa-4x" v-on:click="pause"></span>
     </div>
@@ -28,10 +29,14 @@ export default {
     },
     currentInfo: {
       type: String
+    },
+    icon: {
+      type: String
     }
   },
   data () {
     return {
+      changeIcon: this.icon
     }
   },
   methods: {
@@ -42,6 +47,23 @@ export default {
     pause () {
       console.log('Clicked Pause Button')
       this.$refs.audio.pause()
+    },
+    muted () {
+      return this.$refs.audio.muted
+    },
+    playing () {
+      return this.$refs.audio.playing
+    },
+    mute () {
+      let isMuted = this.muted()
+      this.$refs.audio.muted = !this.$refs.audio.muted
+      if (!isMuted) {
+        console.log('playing->mute')
+        this.changeIcon = 'btn fa fa-volume-off fa-4x'
+      } else {
+        console.log('mute->play')
+        this.changeIcon = 'btn fa fa-volume-up fa-4x'
+      }
     }
   },
   created: function () {
