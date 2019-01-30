@@ -1,6 +1,8 @@
 <template>
   <div id="musicframe">
-    <marquee>{{currentInfo}}</marquee>
+    <div class="title">
+      <p>{{currentInfo}}</p>
+    </div>
     <div class="img">
       <img v-bind:src="currentImage" width="100%" height="100%"/>
     </div>
@@ -83,33 +85,29 @@ export default {
     padding:20px;
   }
 }
-  .img {
-    height: auto;
-  }
   img {
     border: 1px;
     border-radius: 4px;
     padding: 10px;
   }
-  marquee {
+  .title {
     width: 100%;
-    height: 40px;
-    margin: 5px;
-    display: block;
-    font-size: 30px;
+    height: 100%;
+    padding: 10px 5px;
+    display: inline-block;
+    font-size: 1.5rem;
     text-align: center;
   }
   #controls {
     border: none;
     color: white;
-    font-size: 1em;
     position: absolute;
     top: 280px;
     width: 400px;
-    height: 100px;
+    height: 80px;
     text-align: center;
   }
   .btn {
-    width: 5rem;
+    width: 100px;
   }
 </style>
