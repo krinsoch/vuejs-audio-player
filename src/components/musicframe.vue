@@ -4,24 +4,29 @@
       <p>{{currentInfo}}</p>
     </div>
     <div class="img">
-      <img v-bind:src="currentImage" width="100%" height="100%"/>
+      <img :src="currentImage" width="100%" height="100%"/>
     </div>
     <div class="btm" id="controls">
-      <audio ref="audio" id="audio">
-        <source v-bind:src="currentSong"/>
-        not supported
+      <obg-button :icon="isPlaying ? 'play' : 'pause'" @click="onPlay"></obg-button>
+      <audio controls ref="obgAudio"
+             id="audio"
+             preload="auto"
+             loop="true"
+             >
+        <source :src="currentSong"/>
       </audio>
-      <span v-bind:class="changeIcon" v-on:click="mute"></span>
-      <span class="btn fa fa-play fa-4x" v-on:click="play"></span>
-      <span class="btn fa fa-pause fa-4x" v-on:click="pause"></span>
     </div>
   </div>
 </template>
 
 <script>
 import {bus} from '../main'
+import button from 'obigo-js-ui-rnbs/components/button'
 export default {
   name: 'musicframe',
+  components: {
+    'obg-button': button
+  },
   props: {
     currentSong: {
       type: String
@@ -31,48 +36,44 @@ export default {
     },
     currentInfo: {
       type: String
-    },
-    icon: {
-      type: String
     }
   },
   data () {
     return {
-      changeIcon: this.icon
+      isPlaying: false
     }
   },
   methods: {
-    play () {
-      console.log('Clicked Play Button')
-      this.$refs.audio.play()
-    },
-    pause () {
-      console.log('Clicked Pause Button')
-      this.$refs.audio.pause()
+    onPlay () {
+      this.isPlaying = !this.isPlaying
     },
     muted () {
-      return this.$refs.audio.muted
-    },
-    playing () {
-      return this.$refs.audio.playing
+      return this.$refs.obgAudio.muted
     },
     mute () {
       let isMuted = this.muted()
-      this.$refs.audio.muted = !this.$refs.audio.muted
+      this.$refs.obgAudio.muted = !this.$refs.obgAudio.muted
       if (!isMuted) {
         console.log('playing->mute')
-        this.changeIcon = 'btn fa fa-volume-off fa-4x'
       } else {
         console.log('mute->play')
-        this.changeIcon = 'btn fa fa-volume-up fa-4x'
       }
     }
   },
   created: function () {
     bus.$on('reload', () => {
-      this.$refs.audio.load()
-      this.$refs.audio.play()
+      this.$refs.obgAudio.load()
+      this.$refs.obgAudio.play()
     })
+  },
+  updated () {
+    if (!this.isPlaying) {
+      this.$refs.obgAudio.play()
+      console.log('play music')
+    } else {
+      this.$refs.obgAudio.pause()
+      console.log('stop music')
+    }
   }
 }
 </script>
@@ -107,7 +108,7 @@ export default {
     height: 80px;
     text-align: center;
   }
-  .btn {
-    width: 100px;
+  .audio {
+    float: right;
   }
 </style>

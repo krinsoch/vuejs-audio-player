@@ -1,7 +1,7 @@
 <template>
   <div class='row'>
     <div class='column'>
-      <musicframe v-bind:currentSong="currentSong" v-bind:currentImage="currentImage" v-bind:currentInfo="currentInfo" v-bind:icon="icon"></musicframe>
+      <musicframe v-bind:currentSong="currentSong" v-bind:currentImage="currentImage" v-bind:currentInfo="currentInfo"></musicframe>
     </div>
     <div class='column'>
       <playlist v-bind:currentSong="currentSong" v-bind:currentImage="currentImage" v-bind:currentInfo="currentInfo" @updateData="swapData($event)"></playlist>
@@ -23,9 +23,8 @@ export default {
   data () {
     return {
       currentSong: '',
-      currentImage: 'https://i.ibb.co/Xxc5QT7/001.jpg',
-      currentInfo: 'Audio Player',
-      icon: 'btn fa fa-volume-up fa-4x'
+      currentImage: 'resource/001.jpg',
+      currentInfo: 'Audio Player'
     }
   },
   methods: {
@@ -38,20 +37,21 @@ export default {
 }
 </script>
 <style lang='scss' scoped>
-/*.contents {
-  padding:20px;
+.contents {
+/*  padding:20px;*/
   color: white;
   & > p,
   & > div{
-    padding:20px;
+/*    padding:20px;*/
   }
-}*/
+}
   .row {
     display: flex;
     height: 100%;
   }
   .column {
-    flex: 50%;
+    flex: 50x;
+    width: 50%;
     height: 100%;
   }
 
