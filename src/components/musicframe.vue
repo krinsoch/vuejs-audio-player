@@ -3,11 +3,13 @@
     <div class="title">
       <p>{{currentInfo}}</p>
     </div>
-    <div class="img">
+    <div class="music-info-cover">
       <img :src="currentImage" width="100%" height="100%"/>
     </div>
-    <div class="btm" id="controls">
-      <obg-button :icon="isPlaying ? 'play' : 'pause'" @click="onPlay"></obg-button>
+    <div class="buttons-wrapper player" id="controls">
+      <obg-button class="prev player-buttons" icon="step-backward" @click="onClickPrev"></obg-button>
+      <obg-button class="play player-buttons" :icon="isPlaying ? 'play' : 'pause'" @click="onPlay"></obg-button>
+      <obg-button class="next player-buttons" icon="step-forward" @click="onClickNext"></obg-button>
       <audio controls ref="obgAudio"
              id="audio"
              preload="auto"
@@ -58,6 +60,14 @@ export default {
       } else {
         console.log('mute->play')
       }
+    },
+    onClickPrev () {
+      bus.$emit('prev')
+      console.log('prev button clicked')
+    },
+    onClickNext () {
+      bus.$emit('next')
+      console.log('next button clicked')
     }
   },
   created: function () {
@@ -86,11 +96,6 @@ export default {
     padding:20px;
   }
 }
-  img {
-    border: 1px;
-    border-radius: 4px;
-    padding: 10px;
-  }
   .title {
     width: 100%;
     height: 100%;
@@ -99,16 +104,22 @@ export default {
     font-size: 1.5rem;
     text-align: center;
   }
-  #controls {
-    border: none;
-    color: white;
-    position: absolute;
-    top: 280px;
-    width: 400px;
-    height: 80px;
+  .music-info-cover {
+    margin: 9px;
+    flex: 1;
     text-align: center;
+    box-sizing: border-box;
+    display: block;
+    width: 210px;
+    height: 210px;
+    margin-left: auto;
+    margin-right: auto;
   }
-  .audio {
-    float: right;
+  .buttons-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 0 auto;
   }
 </style>
