@@ -32,7 +32,6 @@ export default {
       this.currentSong = data[0]
       this.currentImage = data[1]
       this.currentInfo = data[2]
-      console.log('swapData', this.currentSong, this.currentImage, this.currentInfo)
     }
   }
 }
