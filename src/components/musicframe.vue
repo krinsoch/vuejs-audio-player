@@ -13,10 +13,10 @@
       <audio ref="obgAudio"
              id="audio"
              preload="auto"
-             loop="true"
              @durationchange="onUpdateDuration"
              @timeupdate="onUpdateTime"
              @progress="onProgress"
+             @ended="onEnded"
              >
         <source :src="currentSong"/>
       </audio>
@@ -76,6 +76,9 @@ export default {
       if (this.$refs.obgAudio.buffered.length === 1) {
         this.$refs.obgAudio.buffered.end(0)
       }
+    },
+    onEnded (e) {
+      Events.$emit('next')
     }
   },
   created: function () {

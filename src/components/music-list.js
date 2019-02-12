@@ -31,12 +31,12 @@ export const MUSIC = [
   },
   {
     url: 'resource/Maid with the Flaxen Hair.mp3',
-    image: 'https://i.ytimg.com/vi/oY5BYjsrIHk/maxresdefault.jpg',
+    image: 'resource/001.jpg',
     info: 'local - Maid with the Flaxen Hair'
   },
   {
     url: 'resource/Sleep Away.mp3',
-    image: 'https://i.ytimg.com/vi/oY5BYjsrIHk/maxresdefault.jpg',
+    image: 'resource/001.jpg',
     info: 'Local - Sleep Away'
   },
   {
