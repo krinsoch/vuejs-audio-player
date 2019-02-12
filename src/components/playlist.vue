@@ -1,7 +1,7 @@
 <template>
   <div class="contents" id="playlist">
     <obg-list ref="list" :scrollbars="$model.options.scrollbars">
-      <obg-list-item v-for='(music, index) in musics' @click="changeSource(music, index)" :key="music.info" v-obg-focus>
+      <obg-list-item v-for='(music, index) in musics' @click="selectSource(index)" :key="music.info" v-obg-focus>
         <div class='content'>
           <p>{{music.info}}</p>
         </div>
@@ -38,13 +38,13 @@ export default {
     }
   },
   methods: {
-    changeSource: function (e, i) {
-      let songValue = e.url
-      let songImage = e.image
-      let songInfo = e.info
+    selectSource: function (i) {
       this.index = i
-      console.log(songValue, songImage, songInfo, 'playlist changeSource log')
-      this.$emit('updateData', [songValue, songImage, songInfo])
+      console.log('select song: ' + MUSIC[i].info)
+      this.changeSource(i)
+    },
+    changeSource: function (i) {
+      this.$emit('updateData', [MUSIC[i].url, MUSIC[i].image, MUSIC[i].info])
       Events.$emit('reload')
     }
   },
@@ -53,20 +53,22 @@ export default {
       console.log('play prev song')
       if (this.index !== 0) {
         this.index = this.index - 1
-        this.$emit('updateData', [MUSIC[this.index].url, MUSIC[this.index].image, MUSIC[this.index].info])
-        Events.$emit('reload')
+        this.changeSource(this.index)
       } else {
         console.log('first song!')
+        this.index = MUSIC.length - 1
+        this.changeSource(this.index)
       }
     })
     Events.$on('next', () => {
       console.log('play next song')
       if (this.index + 1 < MUSIC.length) {
         this.index = this.index + 1
-        this.$emit('updateData', [MUSIC[this.index].url, MUSIC[this.index].image, MUSIC[this.index].info])
-        Events.$emit('reload')
+        this.changeSource(this.index)
       } else {
         console.log('last song!')
+        this.index = 0
+        this.changeSource(this.index)
       }
     })
   }
