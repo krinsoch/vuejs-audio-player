@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import { bus } from '../main'
+import {Events} from 'obigo-js-ui'
 import {list, listItem} from 'obigo-js-ui-rnbs/components/list'
 import {MUSIC} from './music-list'
 export default {
@@ -45,26 +45,26 @@ export default {
       this.index = i
       console.log(songValue, songImage, songInfo, 'playlist changeSource log')
       this.$emit('updateData', [songValue, songImage, songInfo])
-      bus.$emit('reload')
+      Events.$emit('reload')
     }
   },
   created: function () {
-    bus.$on('prev', () => {
-      console.log('prev button func')
+    Events.$on('prev', () => {
+      console.log('play prev song')
       if (this.index !== 0) {
         this.index = this.index - 1
         this.$emit('updateData', [MUSIC[this.index].url, MUSIC[this.index].image, MUSIC[this.index].info])
-        bus.$emit('reload')
+        Events.$emit('reload')
       } else {
         console.log('first song!')
       }
     })
-    bus.$on('next', () => {
-      console.log('next button func')
+    Events.$on('next', () => {
+      console.log('play next song')
       if (this.index + 1 < MUSIC.length) {
         this.index = this.index + 1
         this.$emit('updateData', [MUSIC[this.index].url, MUSIC[this.index].image, MUSIC[this.index].info])
-        bus.$emit('reload')
+        Events.$emit('reload')
       } else {
         console.log('last song!')
       }

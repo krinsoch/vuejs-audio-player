@@ -7,27 +7,33 @@
       <img :src="currentImage" width="100%" height="100%"/>
     </div>
     <div class="buttons-wrapper player" id="controls">
-      <obg-button class="prev player-buttons" icon="step-backward" @click="onClickPrev"></obg-button>
+      <obg-button class="prev player-buttons" icon="step-backward" @click="onPrevSong"></obg-button>
       <obg-button class="play player-buttons" :icon="isPlaying ? 'play' : 'pause'" @click="onPlay"></obg-button>
-      <obg-button class="next player-buttons" icon="step-forward" @click="onClickNext"></obg-button>
-      <audio controls ref="obgAudio"
+      <obg-button class="next player-buttons" icon="step-forward" @click="onNextSong"></obg-button>
+      <audio ref="obgAudio"
              id="audio"
              preload="auto"
              loop="true"
+             @durationchange="onUpdateDuration"
+             @timeupdate="onUpdateTime"
+             @progress="onProgress"
              >
         <source :src="currentSong"/>
       </audio>
+      <music-bar :audioInfo='audioInfo'></music-bar>
     </div>
   </div>
 </template>
 
 <script>
-import {bus} from '../main'
+import {Events} from 'obigo-js-ui'
 import button from 'obigo-js-ui-rnbs/components/button'
+import musicBar from './music-bar'
 export default {
   name: 'musicframe',
   components: {
-    'obg-button': button
+    'obg-button': button,
+    'music-bar': musicBar
   },
   props: {
     currentSong: {
@@ -42,36 +48,38 @@ export default {
   },
   data () {
     return {
-      isPlaying: false
+      isPlaying: false,
+      audioInfo: {
+        currentTime: 0,
+        duration: 0,
+        buffered: 0
+      }
     }
   },
   methods: {
     onPlay () {
       this.isPlaying = !this.isPlaying
     },
-    muted () {
-      return this.$refs.obgAudio.muted
+    onPrevSong () {
+      Events.$emit('prev')
     },
-    mute () {
-      let isMuted = this.muted()
-      this.$refs.obgAudio.muted = !this.$refs.obgAudio.muted
-      if (!isMuted) {
-        console.log('playing->mute')
-      } else {
-        console.log('mute->play')
+    onNextSong () {
+      Events.$emit('next')
+    },
+    onUpdateTime () {
+      this.audioInfo.currentTime = this.$refs.obgAudio.currentTime
+    },
+    onUpdateDuration () {
+      this.audioInfo.duration = this.$refs.obgAudio.duration
+    },
+    onProgress (e) {
+      if (this.$refs.obgAudio.buffered.length === 1) {
+        this.$refs.obgAudio.buffered.end(0)
       }
-    },
-    onClickPrev () {
-      bus.$emit('prev')
-      console.log('prev button clicked')
-    },
-    onClickNext () {
-      bus.$emit('next')
-      console.log('next button clicked')
     }
   },
   created: function () {
-    bus.$on('reload', () => {
+    Events.$on('reload', () => {
       this.$refs.obgAudio.load()
       this.$refs.obgAudio.play()
     })
@@ -110,8 +118,8 @@ export default {
     text-align: center;
     box-sizing: border-box;
     display: block;
-    width: 210px;
-    height: 210px;
+    width: 200px;
+    height: 200px;
     margin-left: auto;
     margin-right: auto;
   }
